@@ -23,9 +23,7 @@ def show_all_notes(note_book: list[dict]):
         print('   Время создания             Название заметки')
         print('=================================================')
         for i, note in enumerate(note_book, 1):
-            title = note.get('title')
-            time = note.get('time')
-            print(f'{i:=3d}. {time:<26} {title}')
+            print(f"{i:=3d}. {note.get('time'):<26} {note.get('title')}")
         print('=================================================')
 
 def open_note(note_book: list[dict]):
@@ -36,13 +34,10 @@ def open_note(note_book: list[dict]):
         input_error()
 
 def open_selected_note(note_book: list[dict], index: int):
-        counter = 0
-        for note in note_book:
-            counter += 1
         if index == 0:
             input_error()
         if index:
-            if (1 <= index <= counter):
+            if (1 <= index <= len(note_book)):
                 title = note_book[index - 1].get('title')
                 body = note_book[index - 1].get('body')
                 print('\n=================================================')
@@ -54,11 +49,8 @@ def open_selected_note(note_book: list[dict], index: int):
                 input_error()
 
 def new_note(note_book: list[dict]):
-        counter = 0
-        for note in note_book:
-            counter += 1
-        if counter:
-            id = int(note_book[counter - 1].get('id'))
+        if len(note_book):
+            id = int(note_book[len(note_book) - 1].get('id'))
             new_id = id + 1
         else:
             new_id = 1
@@ -69,7 +61,8 @@ def new_note(note_book: list[dict]):
         new_note = {'id': str(new_id),
                         'title': title,
                         'body': body,
-                        'time': current_time}
+                        'time': current_time,
+                        'change_time': 0}
         return new_note
 
 def change_note(note_book: list[dict]):
@@ -83,7 +76,8 @@ def change_note(note_book: list[dict]):
         return choice - 1, {'id': note_book[choice - 1].get('id'),
                             'title': title if title else note_book[choice - 1].get('title'),
                             'body': body if body else note_book[choice - 1].get('body'),
-                            'time': current_time + ' (изменено)'}
+                            'time': note_book[choice - 1].get('time'),
+                            'change_time': current_time}
     except:
         input_error()
 
@@ -95,13 +89,10 @@ def delete_note(note_book: list[dict]):
         input_error()
 
 def delete_selected_note(note_book: list[dict], index: int):
-        counter = 0
-        for note in note_book:
-            counter += 1
         if index == 0:
             input_error()
         if index:
-            if (1 <= index + 1 <= counter):
+            if (1 <= index + 1 <= len(note_book)):
                 title = note_book[index].get('title')
                 value = delete_secure(title)
                 return value
@@ -144,6 +135,9 @@ def note_is(status: str):
 
 def note_book_warning():
     print('\nЗаметки пусты либо файл не открыт!')
+
+def note_book_empty():
+    print('\nЗаметки пусты! Создайте новую заметку')
 
 def add_note_warning():
      print('\nЗаметки пусты либо файл не был открыт!'

@@ -20,8 +20,11 @@ def main_start():
                         if note_book:
                             view.note_book_is('уже загружены')
                         else:
-                            note.open_file()
-                            view.note_book_is('загружены')
+                            try:
+                                note.open_file()
+                                view.note_book_is('загружены')
+                            except:
+                                view.note_book_empty()
                     case 2:
                         if note_book:
                             note.save_file()
@@ -41,10 +44,15 @@ def main_start():
                         else:
                             view.add_note_warning()
                             view.click_to_continue()
-                            note.open_file()
-                            new_entry = view.new_note(note_book)
-                            note.add(new_entry)
-                            view.note_is('добавлена')
+                            try:
+                                note.open_file()
+                                new_entry = view.new_note(note_book)
+                                note.add(new_entry)
+                                view.note_is('добавлена')
+                            except:
+                                new_entry = view.new_note(note_book)
+                                note.add(new_entry)
+                                view.note_is('добавлена')
                     case 6:
                         if note_book:
                             new_value = view.change_note(note_book)
