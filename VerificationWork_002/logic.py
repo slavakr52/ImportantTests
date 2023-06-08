@@ -1,4 +1,6 @@
 import view
+from os import path
+import json
 
 class Logic:
 
@@ -8,23 +10,11 @@ class Logic:
 
     def open_file(self):
         with open(self.path, 'r', encoding = 'UTF-8') as file:
-            data = file.readlines()
-            for note in data:
-                list = note.strip().split(';')
-                dict_note = {}
-                dict_note['id'] = list[0]
-                dict_note['title'] = list[1]
-                dict_note['body'] = list[2]
-                dict_note['time'] = list[3]
-                self.temp_book.append(dict_note)
+            self.temp_book = json.load(file)
 
     def save_file(self):
-        data = []
-        for note in self.temp_book:
-            data.append(';'.join(note.values()))
-        data = '\n'.join(data)
         with open(self.path, 'w', encoding='UTF-8') as file:
-            file.write(data)
+            json.dump(self.temp_book, file, ensure_ascii=False, indent=4)
 
     def delete(self, index: int):
         if index:
