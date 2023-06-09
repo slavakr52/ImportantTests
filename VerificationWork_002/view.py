@@ -40,11 +40,17 @@ def open_selected_note(note_book: list[dict], index: int):
             if (1 <= index <= len(note_book)):
                 title = note_book[index - 1].get('title')
                 body = note_book[index - 1].get('body')
+                time = note_book[index - 1].get('time')
+                change_time = note_book[index - 1].get('change_time')
                 print('\n=================================================')
                 print(textwrap.fill(title, 50))
                 print('-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -')
                 print(textwrap.fill(body, 50))
                 print('=================================================')
+                print(f'Создано: {time}')
+                if change_time:
+                    print(f'Изменено: {change_time}')
+
             else:
                 input_error()
 
