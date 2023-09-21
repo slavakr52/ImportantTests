@@ -1,12 +1,11 @@
 package my_project;
 
 public class PackAnimals extends Animal {
-    
+
     String id;
     String name;
     String birth_date;
     String command;
-
 
     public PackAnimals(String animal_type, String id, String name, String birth_date, String command) {
         super(animal_type);
@@ -16,5 +15,8 @@ public class PackAnimals extends Animal {
         this.command = command;
     }
 
-    
+    public void ShowInfo() {
+        System.out.println(animal_type + id + name + birth_date + command);
+    }
+
 }

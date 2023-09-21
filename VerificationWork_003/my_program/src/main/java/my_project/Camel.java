@@ -6,6 +6,11 @@ public class Camel extends PackAnimals {
         super(animal_type, id, name, birth_date, command);
     }
 
+    @Override
+    public void ShowInfo() {
+        super.ShowInfo();
+    }
 
+    
     
 }

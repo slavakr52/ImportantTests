@@ -14,6 +14,10 @@ public class Pets extends Animal{
         this.birth_date = birth_date;
         this.command = command;
     }
+
+    public void ShowInfo(){
+        System.out.println(animal_type + id + name + birth_date + command);
+    }
     
 
 

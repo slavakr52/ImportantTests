@@ -1,6 +1,8 @@
 package my_project;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,10 +11,12 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scannerInt = new Scanner(System.in);
+        Scanner scannerLine = new Scanner(System.in);
+
         System.out.print("\nДобро пожаловать в реестр животных!"
                 + "\n\nНажмите Enter для начала работы");
-        scanner.nextLine();
+        scannerLine.nextLine();
         Boolean flag = true;
         while (flag) {
 
@@ -22,50 +26,85 @@ public class Main {
                     + "\n3."
                     + "\n4. Выход");
 
+            List animalList = new ArrayList();
+
             System.out.print("Выберите пункт меню: ");
             try {
-                int userChoose = scanner.nextInt();
+                int userChoose = scannerInt.nextInt();
 
                 // выбор пункта меню
                 switch (userChoose) {
                     case 1:
+                        // ввод данных по животному
+                        System.out.print("Введите кличку животного: ");
+                        String name = scannerLine.nextLine();
+                        System.out.print("Введите дату рождения животного: ");
+                        String birth_date = scannerLine.nextLine();
+                        System.out.print("Введите команды, которые знает животное: ");
+                        String command = scannerLine.nextLine();
 
-                        System.out.print("Введите кличку животного: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Введите кличку животного: ");
-                        String birth_date = scanner.nextLine();
-                        System.out.print("Введите кличку животного: ");
-                        String command = scanner.nextLine();
-                        
                         // выбор типа животного
                         System.out.println("\nВыберите тип животного:"
                                 + "\n1. Домашнее животное"
                                 + "\n2. Вьючное животное");
-                        int userChoose2 = scanner.nextInt();
+                        int userChoose2 = scannerInt.nextInt();
                         switch (userChoose2) {
-                            //домашнее животное
+
+                            // домашнее животное
                             case 1:
                                 String type1 = "Pet";
                                 System.out.println("\nКакое домашнее животное вы хотите добавить?"
                                         + "\n1. Собака"
                                         + "\n2. Кошка"
                                         + "\n3. Хомяк");
-                                int userChoose3 = scanner.nextInt();
+                                int userChoose3 = scannerInt.nextInt();
                                 switch (userChoose3) {
-                                    //собака
-                                    case 1:
-                                    Dog dog = new Dog (type1, "1", name, birth_date, command);
 
+                                    // собака
+                                    case 1:
+                                        Dog dog = new Dog(type1, "1", name, birth_date, command);
+                                        dog.ShowInfo();
+                                        break;
+                                    // кошка
+                                    case 2:
+                                        Cat cat = new Cat(type1, "1", name, birth_date, command);
+                                        cat.ShowInfo();
+                                        break;
+                                    // хомяк
+                                    case 3:
+                                        Hamster hamster = new Hamster(type1, "1", name, birth_date, command);
+                                        hamster.ShowInfo();
+                                        break;
                                 }
-                            //вьючное животное
+                                break;
+
+                            // вьючное животное
                             case 2:
-                                String type2 = "Pack Animal";
+
+                                String type2 = "PackAnimal";
                                 System.out.println("\nКакое вьючное животное вы хотите добавить?"
                                         + "\n1. Лошадь"
                                         + "\n2. Верблюд"
                                         + "\n3. Осёл");
+                                int userChoose4 = scannerInt.nextInt();
+                                switch (userChoose4) {
+                                    // лошадь
+                                    case 1:
+                                        Horse horse = new Horse(type2, "1", name, birth_date, command);
+                                        horse.ShowInfo();
+                                        break;
+                                    // верблюд
+                                    case 2:
+                                        Camel camel = new Camel(type2, "1", name, birth_date, command);
+                                        camel.ShowInfo();
+                                        break;
+                                    // осёл
+                                    case 3:
+                                        Donkey donkey = new Donkey(type2, "1", name, birth_date, command);
+                                        donkey.ShowInfo();
+                                        break;
+                                }
                         }
-
                     case 2:
                         break;
                     case 3:
@@ -74,14 +113,15 @@ public class Main {
                         flag = false;
                         break;
                     default:
-                        System.out.print("Такого пункта нет. Повторите ввод");
+                        System.out.print("\nТакого пункта нет. Повторите ввод");
+                        scannerLine.nextLine();
                         break;
                 }
 
             } catch (InputMismatchException e) {
-                System.out.println("Введите корректный пункт меню!");
+                System.out.println("\nНекорректный ввод! Перезапустите программу\n");
+                break;
             }
-
         }
     }
 }
