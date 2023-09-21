@@ -5,10 +5,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
+
 public class Main {
     public static void main(String[] args) {
         Scanner scannerInt = new Scanner(System.in);
