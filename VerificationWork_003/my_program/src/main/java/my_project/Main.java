@@ -1,9 +1,17 @@
 package my_project;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 /**
  * Hello world!
@@ -11,8 +19,8 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-        Scanner scannerInt = new Scanner(System.in);
-        Scanner scannerLine = new Scanner(System.in);
+        Scanner scannerInt = new Scanner(System.in, "UTF-8");
+        Scanner scannerLine = new Scanner(System.in, "UTF-8");
 
         System.out.print("\nДобро пожаловать в реестр животных!"
                 + "\n\nНажмите Enter для начала работы");
@@ -35,13 +43,16 @@ public class Main {
                 // выбор пункта меню
                 switch (userChoose) {
                     case 1:
-                        // ввод данных по животному
+                        // Добавить животное. ввод данных по животному
                         System.out.print("Введите кличку животного: ");
                         String name = scannerLine.nextLine();
                         System.out.print("Введите дату рождения животного: ");
                         String birth_date = scannerLine.nextLine();
                         System.out.print("Введите команды, которые знает животное: ");
                         String command = scannerLine.nextLine();
+
+                        UUID uuid = UUID.randomUUID();
+                        String id = uuid.toString();
 
                         // выбор типа животного
                         System.out.println("\nВыберите тип животного:"
@@ -62,17 +73,18 @@ public class Main {
 
                                     // собака
                                     case 1:
-                                        Dog dog = new Dog(type1, "1", name, birth_date, command);
+                                        Dog dog = new Dog(type1, id, name, birth_date, command);
                                         dog.ShowInfo();
+                                        dog.WriteInfo();
                                         break;
                                     // кошка
                                     case 2:
-                                        Cat cat = new Cat(type1, "1", name, birth_date, command);
+                                        Cat cat = new Cat(type1, id, name, birth_date, command);
                                         cat.ShowInfo();
                                         break;
                                     // хомяк
                                     case 3:
-                                        Hamster hamster = new Hamster(type1, "1", name, birth_date, command);
+                                        Hamster hamster = new Hamster(type1, id, name, birth_date, command);
                                         hamster.ShowInfo();
                                         break;
                                 }
@@ -90,17 +102,17 @@ public class Main {
                                 switch (userChoose4) {
                                     // лошадь
                                     case 1:
-                                        Horse horse = new Horse(type2, "1", name, birth_date, command);
+                                        Horse horse = new Horse(type2, id, name, birth_date, command);
                                         horse.ShowInfo();
                                         break;
                                     // верблюд
                                     case 2:
-                                        Camel camel = new Camel(type2, "1", name, birth_date, command);
+                                        Camel camel = new Camel(type2, id, name, birth_date, command);
                                         camel.ShowInfo();
                                         break;
                                     // осёл
                                     case 3:
-                                        Donkey donkey = new Donkey(type2, "1", name, birth_date, command);
+                                        Donkey donkey = new Donkey(type2, id, name, birth_date, command);
                                         donkey.ShowInfo();
                                         break;
                                 }
@@ -123,5 +135,8 @@ public class Main {
                 break;
             }
         }
+
     }
+
+    
 }

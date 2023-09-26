@@ -1,5 +1,14 @@
 package my_project;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 public class PackAnimals extends Animal {
 
     String id;
@@ -16,7 +25,22 @@ public class PackAnimals extends Animal {
     }
 
     public void ShowInfo() {
-        System.out.println(animal_type + id + name + birth_date + command);
+        System.out.println("\nAnimal Type: " + animal_type
+                + "\nID: " + id
+                + "\nName: " + name
+                + "\nBirthdate: " + birth_date
+                + "\nCommands: " + command);
+    }
+
+    public void WriteInFile() {
+
+        String str = animal_type + ";" + id + ";" + name + ";" + birth_date + ";" + command + "\n";
+        try (FileWriter writer = new FileWriter("db.txt", true)) {
+            writer.write(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 
 }

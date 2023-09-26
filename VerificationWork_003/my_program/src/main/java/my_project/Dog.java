@@ -11,6 +11,11 @@ public class Dog extends Pets{
         super.ShowInfo();
     }
 
+    @Override
+    public void WriteInfo() {
+        super.WriteInfo();
+    }
+
     
     
 }
