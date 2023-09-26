@@ -38,4 +38,16 @@ public class Pets extends Animal {
 
     }
 
+    public void WriteInfo2() {
+
+        String str = animal_type + ";" + id + ";" + name + ";" + birth_date + ";" + command + "\n";
+        try (FileWriter writer = new FileWriter("db.txt", true)) {
+            writer.write(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
 }

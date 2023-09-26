@@ -105,208 +105,160 @@ slava@Kompukter2:~/verification_work_3$
 
 <image src="images/01.png" alt="Не загрузилось(">
 
-# Задача 7
+# Задача 7, 8, 9, 10, 11, 12
 
 > В подключенном MySQL репозитории создать базу данных “Друзья
 человека”
 
-```
-CREATE DATABASE human_friends;
-```
-# Задача 8
-
 > Создать таблицы с иерархией из диаграммы в БД
-
-### Таблица 'animals'
-```
-CREATE TABLE animals 
-(
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  type VARCHAR(30)
-);
-```
-
-### Таблица 'pets'
-```
-CREATE TABLE pets
- (
-  id INT PRIMARY KEY,
-  type VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES animals(id)
-);
-```
-
-### Таблица 'pack_animals'
-```
-CREATE TABLE pack_animals
- (
-  id INT PRIMARY KEY,
-  type VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES animals(id)
-);
-```
-
-### Таблица 'dog'
-```
-CREATE TABLE dog
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pets(id)
-);
-```
-
-### Таблица 'cat'
-```
-CREATE TABLE cat
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pets(id)
-);
-```
-
-### Таблица 'hamster'
-```
-CREATE TABLE hamster
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pets(id)
-);
-```
-
-### Таблица 'horse'
-```
-CREATE TABLE horse
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pack_animals(id)
-);
-```
-
-### Таблица 'camel'
-```
-CREATE TABLE camel
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pack_animals(id)
-);
-```
-
-### Таблица 'donkey'
-```
-CREATE TABLE donkey
- (
-  id INT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  command VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES pack_animals(id)
-);
-```
-
-# Задача 9
 
 > Заполнить низкоуровневые таблицы именами(животных), командами
 которые они выполняют и датами рождения
 
-```
-INSERT INTO dog (name, birth_date, command)
-VALUES ('Ray', '2020-07-11', 'Sit'),
-       ('Jack', '2021-01-02', 'Lie down'),
-       ('Gray', '2021-03-10', 'Voice');
-```
-```
-INSERT INTO cat (name, birth_date, command)
-VALUES ('Murka', '2022-07-11', 'Kitty-kitty'),
-       ('Jessica', '2020-01-02', 'Kitty-kitty'),
-       ('Tom', '2023-03-10', 'Kitty-kitty'),
-       ('Rocket', '2021-04-10', 'Kitty-kitty');
-```
-```
-INSERT INTO hamster (name, birth_date, command)
-VALUES ('Brown', '2023-06-12', 'None');
-```
-```
-INSERT INTO horse (name, birth_date, command)
-VALUES ('Trinity', '2017-11-11', 'Trot'),
-       ('Smit', '2018-01-25', 'Gallop');
-```
-```
-INSERT INTO camel (name, birth_date, command)
-VALUES ('Humpback', '2015-10-01', 'Sit');
-```
-```
-INSERT INTO donkey (name, birth_date, command)
-VALUES ('Monkey', '2020-05-01', 'Trot');
-```
-
-# Задача 10
-
 > Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
 питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
-
-```
-DROP TABLE camel;
-```
-```
-CREATE TABLE horse_and_donkey AS
-SELECT * FROM horse
-UNION
-SELECT * FROM donkey;
-```
-
-# Задача 11
 
 > Создать новую таблицу “молодые животные” в которую попадут все
 животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
 до месяца подсчитать возраст животных в новой таблице
 
-```
-CREATE TABLE young_animals AS
-SELECT *, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_in_months
-FROM (
-    SELECT 'dog' AS type, name, birth_date, command FROM dog
-    UNION ALL
-    SELECT 'Кошки' AS type, name, birth_date, command FROM cat
-    UNION ALL
-    SELECT 'Хомяки' AS type, name, birth_date, command FROM hamster
-    UNION ALL
-    SELECT 'Лошади' AS type, name, birth_date, command FROM horse
-    UNION ALL
-    SELECT 'Ослы' AS type, name, birth_date, command FROM donkey
-) AS animals
-WHERE birth_date >= DATE_SUB(CURDATE(), INTERVAL 3 YEAR)
-AND birth_date <= DATE_SUB(CURDATE(), INTERVAL 1 YEAR);
-```
-# Задача 12
-
 > Объединить все таблицы в одну, при этом сохраняя поля, указывающие на
 прошлую принадлежность к старым таблицам.
 
+### Далее готовый SQL-скрипт, позволяющий запустить базу данных со всеми вводными параметрами:
+
 ```
-CREATE TABLE all-animals AS
-SELECT 'dog' AS type, name, birth_date, command FROM dog
-UNION ALL
-SELECT 'cat' AS type, name, birth_date, command FROM cat
-UNION ALL
-SELECT 'hamster' AS type, name, birth_date, command FROM hamster
-UNION ALL
-SELECT 'horse' AS type, name, birth_date, command FROM horse
-UNION ALL
-SELECT 'donkey' AS type, name, birth_date, command FROM donkey;
+CREATE DATABASE human_friends;
+
+USE human_friends;
+
+CREATE TABLE animals 
+(
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  type VARCHAR(30)
+);
+
+CREATE TABLE pets
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  animal_type VARCHAR(30),
+  animals_id INT,
+  FOREIGN KEY (animals_id) REFERENCES animals (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE pack_animals
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  animal_type VARCHAR(30),
+  animals_id INT,
+  FOREIGN KEY (animals_id) REFERENCES animals (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE dog
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pets (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE cat
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pets (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE hamster
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pets (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE horse
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE camel
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+CREATE TABLE donkey
+ (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  name VARCHAR(30),
+  birth_date DATE,
+  command VARCHAR(30),
+  pets_id INT,
+  FOREIGN KEY (pets_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON 
+  UPDATE CASCADE
+);
+
+INSERT INTO animals (type)
+VALUES  ('pets'),
+		('pack_animals');
+        
+INSERT INTO pets (animal_type, animals_id)
+VALUES ('Dog', '1'),
+       ('Cat', '1'),
+       ('Hamster', '1');
+        
+INSERT INTO pack_animals (animal_type, animals_id)
+VALUES ('Horse', '2'),
+       ('Camel', '2'),
+       ('Donkey', '2');
+
+INSERT INTO dog (name, birth_date, command, pets_id)
+VALUES ('Ray', '2020-07-11', 'Sit', '1'),
+       ('Jack', '2021-01-02', 'Lie down', '1'),
+       ('Gray', '2021-03-10', 'Voice', '1');
+       
+INSERT INTO cat (name, birth_date, command, pets_id)
+VALUES ('Murka', '2022-07-11', 'Kitty-kitty', '2'),
+       ('Jessica', '2020-01-02', 'Kitty-kitty', '2'),
+       ('Tom', '2023-03-10', 'Kitty-kitty', '2'),
+       ('Rocket', '2021-04-10', 'Kitty-kitty', '2');
+
+INSERT INTO hamster (name, birth_date, command, pets_id)
+VALUES ('Brown', '2023-06-12', 'None', '3');
+
+INSERT INTO horse (name, birth_date, command, pets_id)
+VALUES ('Trinity', '2017-11-11', 'Trot', '1'),
+       ('Smit', '2018-01-25', 'Gallop', '1');
+
+INSERT INTO camel (name, birth_date, command, pets_id)
+VALUES ('Humpback', '2015-10-01', 'Sit', '2');
+
+INSERT INTO donkey (name, birth_date, command, pets_id)
+VALUES ('Monkey', '2020-05-01', 'Trot', '3');
 ```
+
 

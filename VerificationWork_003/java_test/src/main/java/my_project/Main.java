@@ -72,7 +72,7 @@ public class Main {
                                     case 1:
                                         Dog dog = new Dog(type1, id, name, birth_date, command);
                                         dog.ShowInfo();
-                                        dog.WriteInfo();
+                                        Gson gson = new Gson();
                                         break;
                                     // кошка
                                     case 2:
